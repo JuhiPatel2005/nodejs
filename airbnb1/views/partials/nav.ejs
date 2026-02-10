@@ -1,0 +1,13 @@
+<header>
+  <nav>
+    <a href="/" class="brand <%= currentPage === 'index' ? 'active' : '' %>">Airbnb</a>
+
+    <div class="nav-links">
+      <a href="/homes" class="<%= currentPage === 'home' ? 'active' : '' %>">Homes</a>
+      <a href="/favourite-list" class="<%= currentPage === 'favourite-list' ? 'active' : '' %>">Favourites</a>
+      <a href="/bookings" class="<%= currentPage === 'bookings' ? 'active' : '' %>">Bookings</a>
+      <a href="/host/add-home" class="<%= (currentPage === 'addHome' || currentPage === 'homeadded') ? 'active' : '' %>">Add Home</a>
+      <a href="/host/host-homes" class="<%= currentPage === 'host-homes' ? 'active' : '' %>">Host Homes</a>
+    </div>
+  </nav>
+</header>

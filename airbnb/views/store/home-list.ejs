@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main>
+    <h2>Here are our registered homes: </h2>
+    <div class="card-container">
+      <% registeredHomes.forEach(home => { %>
+        <div class="home-card">
+          <h3><%= home.housename %></h3>
+          <% const photoUrl = home.imageUrl || home.photourl; %>
+          <% if (photoUrl) { %>
+            <img src="<%= photoUrl %>" alt="<%= home.housename %>" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+          <% } else { %>
+            <img src="/images/placeholder.svg" alt="placeholder">
+          <% } %>
+          <% if (home.description) { %>
+            <p><%= home.description %></p>
+          <% } %>
+          <div>
+            <div><strong>Location:</strong> <%= home.location || 'Not specified' %></div>
+            <div><strong>Price:</strong> <% if (home.price) { %>$<%= home.price %><% } else { %>N/A<% } %> per night</div>
+            <% if (home.rooms) { %>
+              <div><strong>Rooms:</strong> <%= home.rooms %></div>
+            <% } %>
+            <% if (home.host) { %>
+              <div><strong>Host:</strong> <%= home.host %></div>
+            <% } %>
+            <a href="/homes/<%= home.id %>" >Details</a>
+            <%- include('../partials/favourites', {home: home}) %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+    
+</body>
+</html>

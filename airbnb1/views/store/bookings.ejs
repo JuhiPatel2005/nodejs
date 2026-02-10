@@ -1,0 +1,349 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main>
+    <section class="bookings-header">
+      <h1>My Bookings</h1>
+      <p class="subtitle">Track and manage your reservations</p>
+    </section>
+
+    <% if (registeredHomes && registeredHomes.length > 0) { %>
+      <div class="bookings-container">
+        <div class="card-container">
+          <% registeredHomes.forEach((home, index) => { %>
+            <div class="booking-card">
+              <div class="booking-image-wrapper">
+                <% const photoUrl = home.imageUrl || home.photourl; %>
+                <% if (photoUrl) { %>
+                  <img src="<%= photoUrl %>" alt="<%= home.housename %>" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+                <% } else { %>
+                  <img src="/images/placeholder.svg" alt="placeholder">
+                <% } %>
+                <div class="booking-status">
+                  <span class="status-badge status-confirmed">Confirmed</span>
+                </div>
+              </div>
+              
+              <div class="booking-details">
+                <h3><%= home.housename %></h3>
+                
+                <div class="booking-info-grid">
+                  <div class="info-item">
+                    <span class="info-label">Location</span>
+                    <span class="info-value"><%= home.location || 'Not specified' %></span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Price/Night</span>
+                    <span class="info-value price">$<%= home.price || '0' %></span>
+                  </div>
+                </div>
+
+                <% if (home.description) { %>
+                  <p class="booking-description"><%= home.description.substring(0, 100) %>...</p>
+                <% } %>
+
+                <div class="booking-dates">
+                  <div class="date-item">
+                    <span class="date-label">Check-in</span>
+                    <span class="date-value"><%= new Date(home.checkInDate).toLocaleDateString() %></span>
+                  </div>
+                  <div class="date-item">
+                    <span class="date-label">Check-out</span>
+                    <span class="date-value"><%= new Date(home.checkOutDate).toLocaleDateString() %></span>
+                  </div>
+                  <div class="date-item">
+                    <span class="date-label">Nights</span>
+                    <span class="date-value"><%= home.nights %></span>
+                  </div>
+                </div>
+
+                <div class="booking-total">
+                  <span class="total-label">Total:</span>
+                  <span class="total-price">$<%= home.totalPrice.toFixed(2) %></span>
+                </div>
+
+                <div class="booking-actions">
+                  <form action="/bookings/cancel/<%= home.bookingId %>" method="POST" style="display:inline; width:100%; flex: 1;">
+                    <button type="submit" class="btn-danger" style="width: 100%;">Cancel Booking</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        <h2>No bookings yet</h2>
+        <p>You haven't made any reservations. Start exploring homes and make your first booking!</p>
+        <a href="/homes" class="btn-primary">Browse Homes</a>
+      </div>
+    <% } %>
+  </main>
+
+  <style>
+    .bookings-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .bookings-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      color: #1f6feb;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1.1rem;
+    }
+
+    .booking-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid #e5e5e5;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .booking-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .booking-image-wrapper {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .booking-image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .booking-status {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+    }
+
+    .status-badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .status-confirmed {
+      background: #10b981;
+    }
+
+    .booking-details {
+      padding: 1.5rem;
+    }
+
+    .booking-details h3 {
+      margin: 0 0 1rem 0;
+      font-size: 1.3rem;
+      color: #1f6feb;
+    }
+
+    .booking-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 0.85rem;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 1rem;
+      color: #333;
+      font-weight: 500;
+      margin-top: 0.25rem;
+    }
+
+    .info-value.price {
+      color: #1f6feb;
+      font-weight: 600;
+    }
+
+    .booking-description {
+      color: #666;
+      margin: 1rem 0;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .booking-dates {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #f8f8f8;
+      border-radius: 8px;
+    }
+
+    .date-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .date-label {
+      font-size: 0.8rem;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .date-value {
+      font-size: 0.95rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .booking-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid #f0f0f0;
+      margin: 1rem 0;
+      font-weight: 600;
+    }
+
+    .total-price {
+      font-size: 1.3rem;
+      color: #1f6feb;
+    }
+
+    .booking-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      background: transparent;
+      color: #1f6feb;
+      border: 1px solid #1f6feb;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #1f6feb;
+      color: #fff;
+    }
+
+    .btn-danger {
+      flex: 1;
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #f8f8f8;
+      border-radius: 12px;
+    }
+
+    .empty-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h2 {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    .empty-state p {
+      color: #666;
+      margin-bottom: 2rem;
+      font-size: 1.05rem;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: #1f6feb;
+      color: #fff;
+      padding: 0.75rem 2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: #145bd3;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .bookings-header h1 {
+        font-size: 2rem;
+      }
+
+      .booking-card {
+        margin-bottom: 1.5rem;
+      }
+
+      .booking-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-dates {
+        grid-template-columns: 1fr;
+      }
+
+      .booking-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .btn-secondary,
+      .btn-danger {
+        width: 100%;
+      }
+    }
+  </style>
+</body>
+</html>

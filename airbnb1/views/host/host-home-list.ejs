@@ -1,0 +1,38 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main>
+    <h2>Here are your registered homes host: </h2>
+    <div class="card-container">
+      <% registeredHomes.forEach(home => { %>
+        <div class="home-card">
+          <h3><%= home.housename %></h3>
+          <% const photoUrl = home.imageUrl || home.photourl; %>
+          <% if (photoUrl) { %>
+            <img src="<%= photoUrl %>" alt="<%= home.housename %>" referrerpolicy="no-referrer">
+          <% } %>
+          <% if (home.description) { %>
+            <p><%= home.description %></p>
+          <% } %>
+          <div>
+            <div><strong>Location:</strong> <%= home.location || 'Not specified' %></div>
+            <div><strong>Price:</strong> <% if (home.price) { %>$<%= home.price %><% } else { %>N/A<% } %> per night</div>
+            <% if (home.rooms) { %>
+              <div><strong>Rooms:</strong> <%= home.rooms %></div>
+            <% } %>
+            <% if (home.host) { %>
+              <div><strong>Host:</strong> <%= home.host %></div>
+            <% } %>
+            <a href="/host/edit-home/<%= home._id %>?editing=true">Edit</a>
+            <form action="/host/delete-home/<%= home._id %>" method="POST">
+              <button type="submit">Delete</button>
+            </form>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+    
+</body>
+</html>

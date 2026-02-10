@@ -1,0 +1,44 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main>
+    <h2>Here are your favourite homes: </h2>
+    <div class="card-container">
+        <% if (registeredHomes.length === 0) { %>
+          <p>No favourites yet. Add some from a home's detail page.</p>
+        <% } else { %>
+          <% registeredHomes.forEach(home => { %>
+        <div class="home-card">
+          <h3><%= home.housename %></h3>
+              <% const photoUrl = home.imageUrl || home.photourl; %>
+              <% if (photoUrl) { %>
+                <img src="<%= photoUrl %>" alt="<%= home.housename %>" onerror="this.onerror=null;this.src='/images/placeholder.svg'">
+              <% } else { %>
+                <img src="/images/placeholder.svg" alt="placeholder">
+              <% } %>
+          <% if (home.description) { %>
+            <p><%= home.description %></p>
+          <% } %>
+          <div>
+            <div><strong>Location:</strong> <%= home.location || 'Not specified' %></div>
+            <div><strong>Price:</strong> <% if (home.price) { %>$<%= home.price %><% } else { %>N/A<% } %> per night</div>
+            <% if (home.rooms) { %>
+              <div><strong>Rooms:</strong> <%= home.rooms %></div>
+            <% } %>
+            <% if (home.host) { %>
+              <div><strong>Host:</strong> <%= home.host %></div>
+            <% } %>
+            <button>Book</button>
+          </div>
+          <form action="/favourites/delete/<%= home.id %>" method="POST">
+            <button type="submit">Remove from Favourites</button>
+          </form>
+        </div>
+      <% }) %>
+        <% } %>
+    </div>
+  </main>
+    
+</body>
+</html>

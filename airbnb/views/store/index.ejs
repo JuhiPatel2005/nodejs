@@ -1,0 +1,36 @@
+<%- include('../partials/head') %>
+</head>
+<body>
+  <%- include('../partials/nav') %>
+  <main>
+    <h1>Welcome to airbnb</h1>
+    <h2>Here are our registered homes</h2>
+    <div class="card-container">
+      <% registeredHomes.forEach(home => { %>
+        <div class="home-card">
+          <h3><%= home.housename %></h3>
+          <% const photoUrl = home.imageUrl || home.photourl; %>
+          <% if (photoUrl) { %>
+            <img src="<%= home.photoUrl %>" alt="<%= home.housename %>" referrerpolicy="no-referrer">
+          <% } %>
+          <% if (home.description) { %>
+            <p><%= home.description %></p>
+          <% } %>
+          <div>
+            <div><strong>Location:</strong> <%= home.location || 'Not specified' %></div>
+            <div><strong>Price:</strong> <% if (home.price) { %>$<%= home.price %><% } else { %>N/A<% } %> per night</div>
+            <% if (home.rooms) { %>
+              <div><strong>Rooms:</strong> <%= home.rooms %></div>
+            <% } %>
+            <% if (home.host) { %>
+              <div><strong>Host:</strong> <%= home.host %></div>
+            <% } %>
+            <button>Book</button>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </main>
+    
+</body>
+</html>
