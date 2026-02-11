@@ -4,7 +4,8 @@ exports.getAddHome = (req, res, next) => {
   res.render("host/edit-home", {
     pageTitle: "Add home",
     currentPage: "addHome",
-    editing:false
+    editing:false,
+    isLoggedIn: req.isLoggedIn
   });
 };
 
@@ -14,6 +15,7 @@ exports.getHostHomes = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "host-homes",
       currentPage: "host-homes",
+      isLoggedIn: req.isLoggedIn
     });
   });
 };
@@ -51,7 +53,8 @@ exports.getEditHome = (req, res, next) => {
       home: home,
       pageTitle: "Edit your home",
       currentPage: "host-homes",
-      editing: editing
+      editing: editing,
+      isLoggedIn: req.isLoggedIn
     });
   }).catch(err => {
     console.log('Error fetching home:', err);

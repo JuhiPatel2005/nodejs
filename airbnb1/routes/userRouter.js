@@ -12,6 +12,7 @@ userRouter.post("/bookings/cancel/:bookingId", homesController.postCancelBooking
 userRouter.get("/homes", homesController.getHomes);
 userRouter.get("/favourite-list", homesController.getFavouriteList);
 userRouter.post("/favourites", homesController.postAddFavourite);
+
 userRouter.get("/homes/:homeId", homesController.getHomeDetails);
 
 userRouter.get("/homes/:homeId/favourite", homesController.postAddFavourite);

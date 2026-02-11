@@ -1,3 +1,5 @@
-exports.pageNotFound = (req,res,next) => {
-  res.status(404).render('error',{pageTitle: 'not found', currentPage: 'error'});
+exports.pageNotFound = (req, res, next) => {
+  res
+    .status(404)
+    .render("error", { pageTitle: "not found", currentPage: "error" , isLoggedIn: req.isLoggedIn});
 };

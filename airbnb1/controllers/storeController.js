@@ -1,15 +1,20 @@
 const Favourites = require("../models/favourites");
 const Home = require("../models/home");
 const Bookings = require("../models/bookings");
-const { registeredHomes } = require("./hostController");
 
 exports.getIndex = (req, res, next) => {
+  console.log('Session value', req.session);
   Home.find().then((registeredHomes) => {
     res.render("store/index", {
       registeredHomes: registeredHomes,
       pageTitle: "Airbnb",
       currentPage: "index",
+        isLoggedIn: req.isLoggedIn,
+        username: req.session.username || ''
     });
+  }).catch(err => {
+    console.log('Error fetching homes:', err);
+    res.status(500).send('Error loading homes');
   });
 };
 
@@ -19,7 +24,12 @@ exports.getHomes = (req, res, next) => {
       registeredHomes: registeredHomes,
       pageTitle: "home-list",
       currentPage: "home",
+     isLoggedIn: req.isLoggedIn,
+     username: req.session.username || ''
     });
+  }).catch(err => {
+    console.log('Error fetching homes:', err);
+    res.status(500).send('Error loading homes');
   });
 };
 
@@ -30,6 +40,8 @@ exports.getBookings = (req, res, next) => {
         registeredHomes: [],
         pageTitle: "My Bookings",
         currentPage: "bookings",
+        isLoggedIn: req.isLoggedIn,
+        username: req.session.username || ''
       });
     }
     
@@ -54,6 +66,8 @@ exports.getBookings = (req, res, next) => {
         registeredHomes: bookedHomes,
         pageTitle: "My Bookings",
         currentPage: "bookings",
+          isLoggedIn: req.isLoggedIn,
+          username: req.session.username || ''
       });
     });
   }).catch(err => {
@@ -62,6 +76,8 @@ exports.getBookings = (req, res, next) => {
       registeredHomes: [],
       pageTitle: "My Bookings",
       currentPage: "bookings",
+        isLoggedIn: req.isLoggedIn,
+        username: req.session.username || ''
     });
   });
 };
@@ -74,8 +90,13 @@ exports.getFavouriteList = (req, res, next) => {
     res.render('store/favourite-list', {
       registeredHomes: favouriteHomes,
       pageTitle: 'My Favourites',
-      currentPage: 'favourite-list'
+      currentPage: 'favourite-list',
+       isLoggedIn: req.isLoggedIn,
+       username: req.session.username || ''
     });
+   }).catch(err => {
+    console.log('Error fetching favourites:', err);
+    res.status(500).send('Error loading favourites');
    });
 };
 
@@ -166,7 +187,12 @@ exports.getHomeDetails = (req, res) => {
         home: home,
         pageTitle: home.housename,
         currentPage: "home",
+          isLoggedIn: req.isLoggedIn,
+          username: req.session.username || ''
       });
     }
+  }).catch(err => {
+    console.log('Error fetching home details:', err);
+    res.status(500).send('Error loading home details');
   });
 };

@@ -1,13 +1,27 @@
 <header>
   <nav>
-    <a href="/" class="brand <%= currentPage === 'index' ? 'active' : '' %>">Airbnb</a>
-
+    <a href="/" class="brand <%= currentPage === 'index' ? 'active' : '' %>">
+      <span class="logo-mark" aria-hidden="true"></span>
+      <span>Airbnb</span>
+    </a>
+    <% if( isLoggedIn ) { %>
+      <span class="welcome-message">Welcome, <%= username || 'User' %>!</span>
     <div class="nav-links">
       <a href="/homes" class="<%= currentPage === 'home' ? 'active' : '' %>">Homes</a>
       <a href="/favourite-list" class="<%= currentPage === 'favourite-list' ? 'active' : '' %>">Favourites</a>
       <a href="/bookings" class="<%= currentPage === 'bookings' ? 'active' : '' %>">Bookings</a>
       <a href="/host/add-home" class="<%= (currentPage === 'addHome' || currentPage === 'homeadded') ? 'active' : '' %>">Add Home</a>
       <a href="/host/host-homes" class="<%= currentPage === 'host-homes' ? 'active' : '' %>">Host Homes</a>
+      <% } %>
     </div>
+    <% if( !isLoggedIn ) { %>
+    <div>
+      <a href="/login" >Login</a>
+    </div>
+    <% } else { %>
+      <form action="/logout" method="POST" style="display: inline;">
+        <button type="submit" class="logout-button">Logout</button>
+        </form>
+        <% } %>
   </nav>
 </header>
